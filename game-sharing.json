@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "title": "PIGEONMAN: THE HOUSE",
+  "description": "A first-person survival-horror escape game. Search a decaying house for tools, hide from a relentless pigeon predator, and choose one of two ways out.",
+  "defaultCaptions": {
+    "x": "Will you get out before Pigeonman finds you? PIGEONMAN: THE HOUSE is a tense first-person horror escape.",
+    "facebook": "Explore the house, hide from Pigeonman, solve its puzzles and escape through one of two routes in PIGEONMAN: THE HOUSE.",
+    "reddit": "I made a first-person horror escape game about a relentless pigeon monster and an abandoned house: PIGEONMAN: THE HOUSE.",
+    "discord": "PIGEONMAN: THE HOUSE — find the tools, stay quiet, and escape before he catches you."
+  },
+  "assets": {
+    "og": "assets/share/og.png",
+    "favicon": "assets/share/favicon-512.png"
+  }
+}

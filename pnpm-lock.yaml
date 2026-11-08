@@ -11,10 +11,19 @@ importers:
       '@dimforge/rapier3d-compat':
         specifier: ^0.21.0
         version: 0.21.0
+      '@trpc/client':
+        specifier: ^11.6.0
+        version: 11.24.0(@trpc/server@11.24.0(typescript@5.9.3))(typescript@5.9.3)
+      superjson:
+        specifier: ^1.13.3
+        version: 1.13.3
       three:
         specifier: ^0.186.1
         version: 0.186.1
     devDependencies:
+      '@types/node':
+        specifier: ^22.20.5
+        version: 22.20.5
       '@types/three':
         specifier: ^0.186.0
         version: 0.186.0
@@ -26,10 +35,10 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^8.3.1
-        version: 8.3.1
+        version: 8.3.1(@types/node@22.20.5)
       vitest:
         specifier: ^5.0.2
-        version: 5.0.2(vite@8.3.1)
+        version: 5.0.2(@types/node@22.20.5)(vite@8.3.1(@types/node@22.20.5))
 
 packages:
 
@@ -145,6 +154,33 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
+  '@trpc/client@11.24.0':
+    resolution: {integrity: sha512-D9zoHnF/LGL5SpVnDaSO3b9ymF0jgfnawxtU7HkDjVbcmXeWiAGnJT6fD2UTfEmP63+i57VE49RQqRO0Ig7WJg==}
+    peerDependencies:
+      '@trpc/server': 11.24.0
+      typescript: '>=5.7.2'
+
+  '@trpc/server@11.24.0':
+    resolution: {integrity: sha512-CxpaiIY58ItaLpGxwYTxHHYx5evRAJ4B2Eq94axvg28nwihDgjQIUiLG8T49DZ/t4R2tPHHdeLkF6t0kyjD5YQ==}
+    peerDependencies:
+      '@types/aws-lambda': '*'
+      '@types/express': '*'
+      '@types/ws': '*'
+      fastify: '*'
+      next: '*'
+      typescript: '>=5.7.2'
+    peerDependenciesMeta:
+      '@types/aws-lambda':
+        optional: true
+      '@types/express':
+        optional: true
+      '@types/ws':
+        optional: true
+      fastify:
+        optional: true
+      next:
+        optional: true
+
   '@tweenjs/tween.js@23.1.3':
     resolution: {integrity: sha512-vJmvvwFxYuGnF2axRtPYocag6Clbb5YS7kLL+SO/TeVFzHqDIWrNKYtcsPMibjDx9O+bu+psAy9NKfWklassUA==}
 
@@ -156,6 +192,9 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
+
+  '@types/node@22.20.5':
+    resolution: {integrity: sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==}
 
   '@types/stats.js@0.17.4':
     resolution: {integrity: sha512-jIBvWWShCvlBqBNIZt0KAshWpvSjhkwkEu4ZUcASoAvhmrgAUI2t1dXrjSL4xXVLB4FznPrIsX3nKXFl/Dt4vA==}
@@ -188,6 +227,10 @@ packages:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
 
+  copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
+
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
@@ -218,6 +261,10 @@ packages:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+
+  is-what@4.1.16:
+    resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
+    engines: {node: '>=12.13'}
 
   lightningcss-android-arm64@1.33.0:
     resolution: {integrity: sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg==}
@@ -337,6 +384,10 @@ packages:
   std-env@4.2.0:
     resolution: {integrity: sha512-oCUKSupKTHX53EyjDtuZQ64pjLJ6yYCtpmEw0goYxtjG9KpbRe8KAsl2tBUGU9DyMcJ0RwJ8GqJAFzMXcXW1Rw==}
 
+  superjson@1.13.3:
+    resolution: {integrity: sha512-mJiVjfd2vokfDxsQPOwJ/PtanO87LhpYY88ubI5dUB1Ab58Txbyje3+jpm+/83R/fevaq/107NNhtYBLuoTrFg==}
+    engines: {node: '>=10'}
+
   three@0.186.1:
     resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
 
@@ -356,6 +407,9 @@ packages:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   vite@8.3.1:
     resolution: {integrity: sha512-/bvH9E9tmCXRGp2uXY3WbOldqpTwFkbha/8ANaEQ6VkxhH60KyqLwgZq6lG2y+4uT55x9+9eUHMpQ7uGnOCKjA==}
@@ -510,6 +564,15 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
+  '@trpc/client@11.24.0(@trpc/server@11.24.0(typescript@5.9.3))(typescript@5.9.3)':
+    dependencies:
+      '@trpc/server': 11.24.0(typescript@5.9.3)
+      typescript: 5.9.3
+
+  '@trpc/server@11.24.0(typescript@5.9.3)':
+    dependencies:
+      typescript: 5.9.3
+
   '@tweenjs/tween.js@23.1.3': {}
 
   '@types/chai@5.2.3':
@@ -520,6 +583,10 @@ snapshots:
   '@types/deep-eql@4.0.2': {}
 
   '@types/estree@1.0.9': {}
+
+  '@types/node@22.20.5':
+    dependencies:
+      undici-types: 6.21.0
 
   '@types/stats.js@0.17.4': {}
 
@@ -534,20 +601,24 @@ snapshots:
 
   '@types/webxr@0.5.24': {}
 
-  '@vitest/mocker@5.0.2(vite@8.3.1)':
+  '@vitest/mocker@5.0.2(vite@8.3.1(@types/node@22.20.5))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.2
       estree-walker: 3.0.3
       magic-string: 1.4.2
     optionalDependencies:
-      vite: 8.3.1
+      vite: 8.3.1(@types/node@22.20.5)
 
   '@vitest/spy@5.0.2': {}
 
   assertion-error@2.0.1: {}
 
   chai@6.2.2: {}
+
+  copy-anything@3.0.5:
+    dependencies:
+      is-what: 4.1.16
 
   detect-libc@2.1.2: {}
 
@@ -567,6 +638,8 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  is-what@4.1.16: {}
 
   lightningcss-android-arm64@1.33.0:
     optional: true
@@ -668,6 +741,10 @@ snapshots:
 
   std-env@4.2.0: {}
 
+  superjson@1.13.3:
+    dependencies:
+      copy-anything: 3.0.5
+
   three@0.186.1: {}
 
   tinybench@6.2.0: {}
@@ -681,7 +758,9 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  vite@8.3.1:
+  undici-types@6.21.0: {}
+
+  vite@8.3.1(@types/node@22.20.5):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -689,12 +768,13 @@ snapshots:
       rolldown: 1.2.11
       tinyglobby: 0.2.17
     optionalDependencies:
+      '@types/node': 22.20.5
       fsevents: 2.3.3
 
-  vitest@5.0.2(vite@8.3.1):
+  vitest@5.0.2(@types/node@22.20.5)(vite@8.3.1(@types/node@22.20.5)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.2(vite@8.3.1)
+      '@vitest/mocker': 5.0.2(vite@8.3.1(@types/node@22.20.5))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -705,8 +785,10 @@ snapshots:
       tinybench: 6.2.0
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.3.1
+      vite: 8.3.1(@types/node@22.20.5)
       why-is-node-running: 3.2.2
+    optionalDependencies:
+      '@types/node': 22.20.5
     transitivePeerDependencies:
       - msw
 

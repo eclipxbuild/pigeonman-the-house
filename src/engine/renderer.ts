@@ -37,7 +37,7 @@ export class Renderer {
     this.gl = new THREE.WebGLRenderer({ canvas, antialias: this.preset.antialias, powerPreference: 'high-performance' })
     this.gl.outputColorSpace = THREE.SRGBColorSpace
     this.gl.toneMapping = THREE.ACESFilmicToneMapping
-    this.gl.toneMappingExposure = 1
+    this.gl.toneMappingExposure = 1.15
     this.gl.shadowMap.type = THREE.PCFSoftShadowMap
     this.applyQuality(quality)
     window.addEventListener('resize', () => this.resize())

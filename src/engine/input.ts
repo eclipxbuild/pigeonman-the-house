@@ -4,22 +4,26 @@
  *
  * Call `endFrame()` once per rendered frame after gameplay consumed edge-triggered presses.
  */
-export type Action = 'jump' | 'sprint' | 'dash' | 'pause' | 'confirm' | 'back' | 'interact'
+export type Action = 'jump' | 'sprint' | 'dash' | 'pause' | 'confirm' | 'back' | 'interact' | 'crouch' | 'flashlight' | 'inventory' | 'drop'
 export type InputMethod = 'keyboard' | 'gamepad' | 'touch'
 
 const KEY_BINDINGS: Record<Action, string[]> = {
   jump: ['Space'],
   sprint: ['ShiftLeft', 'ShiftRight'],
-  dash: ['KeyF', 'KeyJ'],
+  dash: ['KeyJ'],
   pause: ['Escape', 'KeyP'],
   confirm: ['Enter', 'NumpadEnter'],
   // Menus handle Escape/Backspace themselves via DOM keydown; `back` is the gamepad B button.
   back: [],
   interact: ['KeyE'],
+  crouch: ['ControlLeft', 'ControlRight'],
+  flashlight: ['KeyF'],
+  inventory: ['Tab'],
+  drop: ['KeyG'],
 }
 const MOVE_KEYS = { up: ['KeyW', 'ArrowUp'], down: ['KeyS', 'ArrowDown'], left: ['KeyA', 'ArrowLeft'], right: ['KeyD', 'ArrowRight'] }
 // Standard gamepad mapping: A=0, B=1, X=2, Y=3, LB=4, RB=5, RT=7, Start=9, L3=10.
-const PAD_BINDINGS: Record<Action, number[]> = { jump: [0], sprint: [4, 10], dash: [2, 5, 7], pause: [9], confirm: [0], back: [1], interact: [3] }
+const PAD_BINDINGS: Record<Action, number[]> = { jump: [0], sprint: [4, 10], dash: [2, 5, 7], pause: [9], confirm: [0], back: [1], interact: [3], crouch: [8], flashlight: [], inventory: [], drop: [] }
 
 export class Input {
   /** Movement intent in [-1, 1]: x = strafe right, y = forward. */
@@ -32,6 +36,7 @@ export class Input {
   invertY = false
 
   private keys = new Set<string>()
+  private pressedCodes = new Set<string>()
   private held_ = new Set<Action>()
   private pressed_ = new Set<Action>()
   private touchMove = { x: 0, y: 0 }
@@ -49,13 +54,14 @@ export class Input {
     on(window, 'keydown', e => {
       if (e.repeat) return
       this.keys.add(e.code)
+      this.pressedCodes.add(e.code)
       this.method = 'keyboard'
       for (const [action, codes] of Object.entries(KEY_BINDINGS) as [Action, string[]][]) {
         if (codes.includes(e.code)) this.pressed_.add(action)
       }
       // Keep the page from scrolling, but never block typing in text fields (leaderboard name).
       const typing = (e.target as HTMLElement | null)?.matches?.('input, textarea')
-      if (!typing && (e.code === 'Space' || e.code.startsWith('Arrow'))) e.preventDefault()
+      if (!typing && (e.code === 'Space' || e.code.startsWith('Arrow') || (e.code === 'Tab' && document.pointerLockElement === canvas))) e.preventDefault()
     })
     on(window, 'keyup', e => this.keys.delete(e.code))
     on(window, 'blur', () => this.keys.clear())
@@ -174,6 +180,11 @@ export class Input {
     return this.pressed_.delete(action)
   }
 
+  /** Read and clear a physical-key edge through the input abstraction (e.g. Digit1 inventory). */
+  consumeCode(code: string): boolean {
+    return this.pressedCodes.delete(code)
+  }
+
   /** Consume the look delta with sensitivity/invert applied. */
   takeLook(): { x: number; y: number } {
     const out = { x: this.look.x * this.sensitivity, y: this.look.y * this.sensitivity * (this.invertY ? -1 : 1) }
@@ -184,6 +195,7 @@ export class Input {
 
   endFrame(): void {
     this.pressed_.clear()
+    this.pressedCodes.clear()
   }
 
   dispose(): void {

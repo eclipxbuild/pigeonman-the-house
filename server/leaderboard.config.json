@@ -1,0 +1,9 @@
+{
+  "identity": "account",
+  "boards": [
+    {
+      "id": "escape-score-v1",
+      "rulesVersion": "v1"
+    }
+  ]
+}

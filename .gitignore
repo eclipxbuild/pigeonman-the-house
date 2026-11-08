@@ -2,3 +2,10 @@ node_modules/
 dist/
 shots/
 /.manus-webdev/preview-identity.json
+# Assets restored from assets.lock.json
+/assets/models/pigeonman-rigged.glb
+/assets/models/pigeonman.glb
+/assets/references/pigeonman-reference.png
+/assets/share/favicon-512.png
+/assets/share/favicon.png
+/assets/share/og.png

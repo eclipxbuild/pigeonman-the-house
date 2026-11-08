@@ -1,78 +1,77 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import * as THREE from 'three'
-import { Input } from '../src/engine/input'
-import { Game } from '../src/game/game'
+import { ALL_ITEMS, createPuzzleState, DIFFICULTIES, interactPuzzle, randomizeItems, scoreEscape, type ItemId, type PuzzleTarget } from '../src/game/horrorRules'
 
-let input: Input
-let axes: number[]
-let game: Game
-let state: any
-let hint: ReturnType<typeof vi.fn>
+describe('randomized survival-horror item placement', () => {
+  const spots = Array.from({ length: 14 }, (_, i) => new THREE.Vector3((i % 5) * 2, i < 9 ? 0 : 3.8, Math.floor(i / 5) * 2))
 
-beforeEach(() => {
-  axes = [0, 0, 0, 0]
-  vi.stubGlobal('window', { addEventListener() {}, removeEventListener() {} })
-  vi.stubGlobal('document', { pointerLockElement: null })
-  vi.stubGlobal('navigator', { getGamepads: () => [{ index: 0, id: 'pad', connected: true, axes, buttons: [] }] })
-  input = new Input({} as HTMLCanvasElement)
-  hint = vi.fn()
-  // Exercise the real input, render and tutorial transition without constructing WebGL/physics.
-  game = Object.create(Game.prototype)
-  state = game
-  Object.assign(state, {
-    input, mode: 'playing', tutorial: 'look', tutorialLook: 0, time: 0,
-    physics: { sync() {} }, player: { root: { position: new THREE.Vector3() }, animate() {} },
-    cam: { update: vi.fn() }, run: { invulnerable: 0, timeLeft: 100 },
-    cores: { animate() {} }, drones: { animate() {} }, fx: { update() {} },
-    world: { update() {} }, renderer: { render() {} }, groundBelow: () => null,
-    hooks: { hint },
+  it('places each required item exactly once and deterministically for a seed', () => {
+    const a = randomizeItems(84729, spots)
+    const b = randomizeItems(84729, spots)
+    expect(a.map(x => x.item)).toEqual(ALL_ITEMS)
+    expect(new Set(a.map(x => `${x.position.x}:${x.position.y}:${x.position.z}`)).size).toBe(ALL_ITEMS.length)
+    expect(a.map(x => x.position.toArray())).toEqual(b.map(x => x.position.toArray()))
+  })
+
+  it('moves item locations when the attempt seed changes', () => {
+    const a = randomizeItems(1, spots).map(x => x.position.toArray())
+    const b = randomizeItems(2, spots).map(x => x.position.toArray())
+    expect(a).not.toEqual(b)
   })
 })
-afterEach(() => { input.dispose(); vi.unstubAllGlobals() })
-function frame(hz: number): void { input.update(1 / hz); game.render(0, 1 / hz) }
 
-describe('look tutorial', () => {
-  for (const hz of [30, 60, 120, 144]) {
-    it(`advances with a diagonal right stick at ${hz} Hz`, () => {
-      axes[2] = axes[3] = Math.SQRT1_2
-      for (let i = 0; i < hz; i++) frame(hz)
-      expect(hint).toHaveBeenCalledExactlyOnceWith('jump')
-    })
-    it(`advances with a single-axis right stick at ${hz} Hz, including low sensitivity`, () => {
-      input.sensitivity = 0.25
-      axes[2] = 0.5
-      for (let i = 0; i < hz; i++) frame(hz)
-      expect(hint).toHaveBeenCalledExactlyOnceWith('jump')
-      expect(state.tutorial).toBe('jump')
-    })
-  }
-  it('does not advance from stick drift within the dead zone', () => {
-    axes[2] = 0.1
-    for (let i = 0; i < 144; i++) frame(144)
-    expect(hint).not.toHaveBeenCalled()
+describe('escape puzzle dependencies', () => {
+  it('requires each physical front-exit dependency in order and then completes the main escape', () => {
+    let state = createPuzzleState()
+    const invoke = (tool: ItemId | null, inventory: ItemId[]) => {
+      const result = interactPuzzle(state, 'front-exit', tool, new Set(inventory))
+      state = result.state
+      return result
+    }
+
+    expect(invoke(null, []).message).toMatch(/crowbar/i)
+    expect(invoke('crowbar', ['crowbar']).state.frontBoardsPried).toBe(true)
+    expect(invoke('hammer', ['hammer']).state.frontBarRemoved).toBe(true)
+    expect(invoke('padlock-key', ['padlock-key']).state.frontPadlockOpen).toBe(true)
+    expect(invoke('main-key', ['main-key']).state.frontDeadboltOpen).toBe(true)
+    const finish = invoke(null, [])
+    expect(finish.state.frontDoorOpen).toBe(true)
+    expect(finish.openedDoor).toBe('front-exit')
+    expect(finish.escaped).toBe('main-door')
   })
-  it('preserves mouse-sized look deltas and the delta passed to the camera', () => {
-    input.look.x = 0.06
-    game.render(0, 1 / 144)
-    expect(hint).toHaveBeenCalledExactlyOnceWith('jump')
-    expect(state.cam.update.mock.calls[0][1]).toEqual({ x: 0.06, y: 0 })
+
+  it('requires the basement key, panel tool, both power parts and cut chain for the garage escape', () => {
+    let state = createPuzzleState()
+    const use = (target: PuzzleTarget, item: ItemId | null, inventory: ItemId[] = item ? [item] : []) => {
+      const result = interactPuzzle(state, target, item, new Set(inventory))
+      state = result.state
+      return result
+    }
+
+    expect(use('basement-door', null).state.basementDoorOpen).toBe(false)
+    expect(use('basement-door', 'basement-key').openedDoor).toBe('basement-door')
+    expect(use('basement-panel', 'screwdriver').state.panelCoverOpen).toBe(true)
+    expect(use('basement-panel', 'fuse').state.circuitPowered).toBe(false)
+    expect(use('basement-panel', 'battery').state.circuitPowered).toBe(true)
+    expect(use('garage-chain', 'pliers').state.garageChainCut).toBe(true)
+    const finish = use('garage-exit', null)
+    expect(finish.state.garageDoorOpen).toBe(true)
+    expect(finish.openedDoor).toBe('garage-exit')
+    expect(finish.escaped).toBe('basement-garage')
   })
-  it('does not count movement in another hint or while paused', () => {
-    state.tutorial = 'move'; axes[2] = 1
-    frame(60)
-    state.advanceTutorial('look'); hint.mockClear()
-    axes[2] = 0; input.takeLook(); frame(144)
-    expect(hint).not.toHaveBeenCalled()
-    state.mode = 'paused'; axes[2] = 1
-    for (let i = 0; i < 60; i++) frame(60)
-    expect(hint).not.toHaveBeenCalled()
-    expect(state.tutorialLook).toBe(0)
-  })
-  it('clears partial progress when entering a new tutorial stage', () => {
-    input.look.x = 0.04; game.render(0, 1 / 60)
-    expect(hint).not.toHaveBeenCalled()
-    state.advanceTutorial('look'); hint.mockClear()
-    input.look.x = 0.02; game.render(0, 1 / 60)
-    expect(hint).not.toHaveBeenCalled()
+
+  it('retains reusable tools and consumes installed fuse and battery only once', () => {
+    let state = createPuzzleState()
+    const screwdriver = interactPuzzle(state, 'basement-panel', 'screwdriver', new Set(['screwdriver']))
+    state = screwdriver.state
+    expect(screwdriver.consumed).toEqual([])
+    const fuse = interactPuzzle(state, 'basement-panel', 'fuse', new Set(['fuse']))
+    state = fuse.state
+    expect(fuse.consumed).toEqual(['fuse'])
+    const battery = interactPuzzle(state, 'basement-panel', 'battery', new Set(['battery']))
+    expect(battery.consumed).toEqual(['battery'])
+    expect(DIFFICULTIES.nightmare.chaseSpeed).toBeGreaterThan(DIFFICULTIES.easy.chaseSpeed)
+    expect(DIFFICULTIES.nightmare.hearingRadius).toBeGreaterThan(DIFFICULTIES.easy.hearingRadius)
+    expect(scoreEscape('nightmare', 180)!).toBeGreaterThan(scoreEscape('easy', 180)!)
   })
 })

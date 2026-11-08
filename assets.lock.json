@@ -1,6 +1,62 @@
 {
   "version": 2,
-  "groups": {},
+  "groups": {
+    "design-source": {
+      "name": "Pigeonman reference",
+      "order": 20
+    },
+    "pigeonman": {
+      "name": "Pigeonman",
+      "order": 10
+    },
+    "sharing": {
+      "name": "Sharing",
+      "order": 30
+    }
+  },
   "bundles": {},
-  "assets": {}
+  "assets": {
+    "assets/models/pigeonman-rigged.glb": {
+      "path": "/manus-storage/game/sha256/029ba27d449a1b521e10f01b632d0f731909cadd838be894c9cfa708ca3fd166.glb",
+      "sha256": "sha256:029ba27d449a1b521e10f01b632d0f731909cadd838be894c9cfa708ca3fd166",
+      "size": 4942588,
+      "assetType": "model",
+      "groupId": "pigeonman"
+    },
+    "assets/models/pigeonman.glb": {
+      "path": "/manus-storage/game/sha256/328d6f1943b9c02bb5d12ee1b589076e0d07ad4698a452062a590ce0521c45f0.glb",
+      "sha256": "sha256:328d6f1943b9c02bb5d12ee1b589076e0d07ad4698a452062a590ce0521c45f0",
+      "size": 4791156,
+      "assetType": "model",
+      "groupId": "pigeonman"
+    },
+    "assets/references/pigeonman-reference.png": {
+      "path": "/manus-storage/game/sha256/8c0fa8d5c6aae59c530d166b4fa300779c86d751421a6275a1333166e51ecc29.png",
+      "sha256": "sha256:8c0fa8d5c6aae59c530d166b4fa300779c86d751421a6275a1333166e51ecc29",
+      "size": 4373822,
+      "assetType": "image",
+      "groupId": "design-source"
+    },
+    "assets/share/favicon-512.png": {
+      "path": "/manus-storage/game/sha256/a34a76634ca0fa643d629aa1b7777267ce8cfa8ba3dad0dcf1069f30aff79815.png",
+      "sha256": "sha256:a34a76634ca0fa643d629aa1b7777267ce8cfa8ba3dad0dcf1069f30aff79815",
+      "size": 285389,
+      "assetType": "image",
+      "groupId": "sharing"
+    },
+    "assets/share/favicon.png": {
+      "path": "/manus-storage/game/sha256/a36ddb9247153f0f0e772f9ba7592a054d6b922947bcea207ee7cc8ccde39102.png",
+      "sha256": "sha256:a36ddb9247153f0f0e772f9ba7592a054d6b922947bcea207ee7cc8ccde39102",
+      "size": 3841237,
+      "assetType": "image",
+      "groupId": "sharing"
+    },
+    "assets/share/og.png": {
+      "path": "/manus-storage/game/sha256/339bdc0c96e0842fd98d81a618eff74720fe1b4022537bb991847da660be987f.png",
+      "sha256": "sha256:339bdc0c96e0842fd98d81a618eff74720fe1b4022537bb991847da660be987f",
+      "size": 4453118,
+      "assetType": "image",
+      "groupId": "sharing"
+    }
+  }
 }

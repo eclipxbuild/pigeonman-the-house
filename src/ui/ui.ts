@@ -3,8 +3,10 @@ import type { I18n } from '../engine/i18n'
 import type { Input } from '../engine/input'
 import { insertScore, type Locale, type Quality, type SaveData, type SaveStore } from '../engine/save'
 import { CONFIG } from '../game/config'
-import type { Compass, Hint } from '../game/game'
 import { formatClock, stars, type RunState } from '../game/rules'
+
+type Compass = { angle: number; distance: number; rise: number }
+type Hint = 'move' | 'look' | 'jump' | 'dash' | 'cores'
 
 export type Screen = 'boot' | 'title' | 'hud' | 'pause' | 'settings' | 'leaderboard' | 'results'
 

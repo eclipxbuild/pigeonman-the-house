@@ -21,14 +21,14 @@ export const DEFAULT_CONFIG = {
     lifeBonus: 500,
   },
   player: {
-    radius: 0.42,
-    halfHeight: 0.5,
-    walkSpeed: 7,
-    sprintSpeed: 11,
+    radius: 0.28,
+    halfHeight: 0.55,
+    walkSpeed: 3.2,
+    sprintSpeed: 5.1,
     acceleration: 60,
     airControl: 0.45,
-    jumpSpeed: 10.5,
-    gravity: -30,
+    jumpSpeed: 4.8,
+    gravity: -22,
     /** Extra gravity when the jump button is released early, for variable jump height. */
     lowJumpGravity: -58,
     maxFall: -40,
@@ -45,7 +45,16 @@ export const DEFAULT_CONFIG = {
     minPitch: -0.35,
     maxPitch: 1.1,
     follow: 10,
-    fov: 62,
+    fov: 74,
+  },
+  enemy: {
+    /** Preview tuning is consumed as a modifier of the current difficulty profile. */
+    speedMultiplier: 1,
+    hearingMultiplier: 1,
+  },
+  horror: {
+    /** Flashlight drain per active second before difficulty/quality adjustment. */
+    flashlightDrain: 0.72,
   },
   drones: {
     speed: 3.2,
