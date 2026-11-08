@@ -3,7 +3,7 @@
 A browser-based, first-person 3D survival-horror escape game built with Three.js and Rapier. Search an abandoned multi-room house, stay quiet around a blind Pigeonman who follows audible footsteps, solve item-gated puzzles, and escape through either the main entrance or the basement/garage route.
 
 ## Run and verify
-
+To play the game CLICK ON THIS LINK : https://pigeonhouse-affd6ajq.manus.game
 ```bash
 pnpm install
 PORT=3000 HOST=0.0.0.0 pnpm dev
@@ -14,6 +14,10 @@ CHROMIUM_EXECUTABLE=/usr/bin/chromium pnpm smoke
 ```
 
 `pnpm dev` restores registered game assets before starting Vite. `pnpm build` restores assets, adds the configured title/favicon/OG metadata, and builds the production site to `dist/`. Run `pnpm smoke` after a build; it uses local registered media, runs a desktop Chromium playthrough, and writes captures to `/tmp/pigeonhouse-smoke/`.
+<img width="933" height="458" alt="image" src="https://github.com/user-attachments/assets/bc7ecf52-f531-419b-a711-c8dfdc3efd1b" />
+<img width="943" height="453" alt="image" src="https://github.com/user-attachments/assets/11c82e67-d4aa-4ae6-8dca-b7aaf81fa49d" />
+<img width="937" height="455" alt="image" src="https://github.com/user-attachments/assets/80a0c7a7-e72f-426d-8c82-b6df33816d2d" />
+<img width="943" height="455" alt="image" src="https://github.com/user-attachments/assets/ec90f639-6d5a-4cee-84bc-b8b0f532f18a" />
 
 ## Controls
 
